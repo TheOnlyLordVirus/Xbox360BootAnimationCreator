@@ -69,7 +69,7 @@ namespace BootAnimationCreator
                 return openFile.FileName;
             }
 
-            return "Error: 404";
+            return string.Empty;
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace BootAnimationCreator
             if (yesno == DialogResult.Yes)
             {
                 string videoFilePath = OpenFilePath("wmv", "bootlogo");
-                if (videoFilePath != "Error: 404")
+                if (!videoFilePath.Equals(string.Empty))
                 {
                     // Files as byte arrays.
                     byte[] templateBinary = Properties.Resources.template;
