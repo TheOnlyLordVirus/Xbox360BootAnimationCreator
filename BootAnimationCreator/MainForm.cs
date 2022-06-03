@@ -40,7 +40,7 @@ namespace BootAnimationCreator
         {
             string userFilePath = OpenFilePath("XeX", "bootanim");
 
-            if(userFilePath != "Error: 404")
+            if(userFilePath != string.Empty)
             {
                 // Calculate Crc-32
                 crcTextBox.Text = CreateCrc32(File.ReadAllBytes(userFilePath));
