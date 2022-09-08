@@ -95,7 +95,7 @@ namespace BootAnimationCreator
         private void CreateXEX()
         {
             // File info.
-            DialogResult yesno = MessageBox.Show("Your boot animation must follow these constraints:\nIt must be a WMV 9 Pro video.\nIt must have a 1250 x 720p resolution.\nThe end bootanim.xex must be smaller than 61342345 bytes's.\nCurrently this only works with big block nands.\n\nDo you want to continue?", "Notice!", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            DialogResult yesno = MessageBox.Show("Your boot animation must follow these constraints:\nIt must be a WMV 9 Advanced Profile video from Adobe Media Encoder.\nIt must have a 1280 x 720p resolution.\nThe end bootanim.xex must be smaller than 61342345 bytes's.\n\nDo you want to continue?", "Notice!", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
             // Very simple data validation.
             if (yesno == DialogResult.Yes)
@@ -106,24 +106,23 @@ namespace BootAnimationCreator
                     // Files as byte arrays.
                     byte[] templateBinary = Properties.Resources.template;
                     byte[] videoBinary = File.ReadAllBytes(videoFilePath);
-                    byte[] nullBytes = Enumerable.Repeat<byte>(0x00, 16743).ToArray<byte>();
+                    //byte[] nullBytes = Enumerable.Repeat<byte>(0x00, 16743).ToArray<byte>();
 
                     // The size of the bootanimXEX
-                    int bootanimXEXsize = templateBinary.Length + videoBinary.Length + nullBytes.Length;
+                    int bootanimXEXsize = templateBinary.Length + videoBinary.Length/* + nullBytes.Length*/;
 
                     // Our final file as an byte array.
                     byte[] bootanimXEX = new byte[bootanimXEXsize];
                     byte[] videoSizeBigEndian = BitConverter.GetBytes(videoBinary.Length);
 
                     // Convert int to big endian.
-                    // For some reason videoSizeBigEndian.Reverse(); was not working here???
                     Array.Reverse(videoSizeBigEndian, 0, videoSizeBigEndian.Length);
 
                     // Create the file.
                     templateBinary.CopyTo(bootanimXEX, 0);
                     videoSizeBigEndian.CopyTo(bootanimXEX, 0xf2c);
                     videoBinary.CopyTo(bootanimXEX, 0x237000);
-                    nullBytes.CopyTo(bootanimXEX, 0x237000 + videoBinary.Length);
+                    //nullBytes.CopyTo(bootanimXEX, 0x237000 + videoBinary.Length);
 
                     // Convert to Big Endian.
                     bootanimXEX.Reverse();
